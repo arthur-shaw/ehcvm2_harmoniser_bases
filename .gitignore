@@ -1,0 +1,7 @@
+# all files for tinkering and troubleshooting
+scratch/
+troubleshooting/
+
+# notes in the root
+*.txt
+*.xlsx
