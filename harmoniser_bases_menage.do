@@ -47,6 +47,42 @@ include "`prog_dir'/rename_vars_lower.do"
 include "`prog_dir'/save_section.do"
 
 /*=============================================================================
+Purger les fichiers de séances passées
+=============================================================================*/
+
+/*-----------------------------------------------------------------------------
+Répertoires avec des fichiers Stata à la racine
+-----------------------------------------------------------------------------*/
+
+local dirs "data_dir_combined data_dir_temp data_dir_output"
+
+foreach dir of local dirs {
+
+    local files: dir "``dir''" files "*.dta"
+
+    foreach file of local files {
+        rm "``dir''/`file'"
+    }
+
+}
+
+/*-----------------------------------------------------------------------------
+Répertoires avec des fichiers do à la racide
+-----------------------------------------------------------------------------*/
+
+local dirs "lbl_dir_temp lbl_dir_out"
+
+foreach dir of local dirs {
+
+    local files: dir "``dir''" files "*.do"
+
+    foreach file of local files {
+        rm "``dir''/`file'"
+    }
+
+}
+
+/*=============================================================================
 Fusionner les bases
 =============================================================================*/
 
