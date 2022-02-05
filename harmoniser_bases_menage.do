@@ -341,10 +341,40 @@ foreach base of local bases_attendus {
 
 }
 
+/*=============================================================================
+Rendre les rosters conformes à leur forme dans questionnaire papier
+=============================================================================*/
 
 /*-----------------------------------------------------------------------------
 Ramener la question filtre oui/non dans le roster
 -----------------------------------------------------------------------------*/
+
+* 7B: consommation alimentaire
+use "`data_dir_combined'/`fichier_principal'", clear
+
+keep interview__key interview__id s07Bq02_*
+
+local food_conso_files = subinstr("`food_conso_files'", "laitier", "lait", .)
+
+foreach food of local food_conso_files {
+
+    qui: d s07Bq02_`food'__*, varlist
+    local old_vars = "`r(varlist)'"
+    local new_vars = subinstr("`old_vars'", "_`food'", "", .)
+    rename (`old_vars') (`new_vars')
+
+}
+
+save "`data_dir_temp'/menage_apure.dta", replace
+
+reshape_multi_select_yn, ///
+    input_dir("`data_dir_temp'") ///
+    main_file("menage_apure.dta") ///
+    roster_file("consommation_alimentaire_7j.dta") ///
+    trigger_var("s07Bq02") ///
+    item_code_var("produit__id") ///
+    new_roster_id_var("s07Bq01") ///
+    output_dir("`data_dir_temp'") ///
 
 * 9A: depense_fete
 reshape_multi_select_yn, ///
@@ -888,8 +918,6 @@ use "`data_dir_temp'/consommation_alimentaire_7j.dta", clear
 add_case_ids, ////
     source_file("`data_dir_combined'/`fichier_principal'") ///
     case_ids(`case_ids_vars' s07Bq00) /// note: add section respondent via -keepusing()- inside function
-
-rename produit__id s07bq01
 
 rename_vars_lower
 
