@@ -17,10 +17,10 @@ Définir les répertoires
 -----------------------------------------------------------------------------*/
 
 * données
-local data_dir_raw "`proj_dir'/data/raw/"		// données brutes
-local data_dir_combined 	"`proj_dir'/data/combined/" 	// données légèrement modifiées
-local data_dir_temp "`proj_dir'/data/temp/" 		// fichiers temporaires
-local data_dir_output "`proj_dir'/data/output/" 	// données finales
+local data_dir_raw      "`proj_dir'/data/0_downloaded/"	// données brutes
+local data_dir_combined "`proj_dir'/data/1_combined/" 	// données légèrement modifiées
+local data_dir_temp     "`proj_dir'/data/2_temp/" 		// fichiers temporaires
+local data_dir_output   "`proj_dir'/data/3_output/" 	// données finales
 
 * étiquettes
 local lbl_dir_temp  "`proj_dir'/labels/temp/"
