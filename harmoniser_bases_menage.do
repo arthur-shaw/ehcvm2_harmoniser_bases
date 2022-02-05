@@ -99,9 +99,9 @@ appendAll, 							    ///
 Créer un base de consommation
 -----------------------------------------------------------------------------*/
 
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Harmoniser les noms de vqriable
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/*-----------------------------------------------------------------------------
+Fusionner les bases
+-----------------------------------------------------------------------------*/
 
 #delim ;
 local food_conso_files = "
@@ -133,10 +133,10 @@ foreach food_conso_file of local food_conso_files {
     foreach var_w_suffix of local var_w_suffixes {
 
         * save label for later manipulation, for variables that have labels
-        qui : ds `var_w_suffix', has(vallabel)
+        /* qui : ds `var_w_suffix', has(vallabel)
         if "`r(varlist)'" != "" {
             label save `var_w_suffix' `var_w_suffix' using "`lbl_dir_temp'/`var_w_suffix'.do", replace
-        }
+        } */
 
         * rename variable
         * - extract variable name component (e.g., s07bq03b)
@@ -150,13 +150,68 @@ foreach food_conso_file of local food_conso_files {
     * save data
     save "`data_dir_temp'/`food_conso_file'.dta", replace
 
+    * save value labels as data
+    uselabel 
+    save "`lbl_dir_temp'/`food_conso_file'_lbls.dta", replace
+
 } 
 
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Gérer étiquettes de valeur
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/*-----------------------------------------------------------------------------
+Fusionner les étiquettes de valeur
+-----------------------------------------------------------------------------*/
 
-* TODO
+* joindre bout à bout les bases d'étiquettes
+local i = 1
+
+cd "`lbl_dir_temp'"
+
+foreach food_conso_file of local food_conso_files {
+
+    if `i' == 1 {
+        use "`food_conso_file'_lbls.dta", clear
+    }
+
+    else if  `i' > 1 {
+        append using "`food_conso_file'_lbls.dta"
+    } 
+
+    local ++i
+
+}
+
+* modifier la base pour transformer les valeurs
+replace lname = "produit__id" if regexm(lname, "([a-z]+)__id")
+gen var = regexs(1) if regexm(lname, "([A-Za-z0-9]+)_([A-Za-z]+)")
+replace lname = var if var != ""
+drop trunc var
+
+* ne retenir que les valeurs distinctes
+duplicates drop lname value label, force
+sort lname value
+
+* retenir les variables
+levelsof lname, clean local(vars_a_etiquetter)
+
+file open label_file using "`lbl_dir_temp'/lbls_fusionnes.do", write replace
+
+local n = _N
+
+forvalues i = 1/`n' {
+
+local curr_variable = lname[`i']
+local curr_value = value[`i']
+local curr_label = label[`i']
+
+file write label_file `"label define `curr_variable' `curr_value' `"`curr_label'"', modify"' _n
+
+}
+
+file close label_file
+
+
+/*-----------------------------------------------------------------------------
+Mettre dans une seule base toutes les bases de consommation alimentaire
+-----------------------------------------------------------------------------*/
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Mettre dans une seule base toutes les bases de consommation alimentaire
@@ -177,6 +232,22 @@ foreach food_conso_file of local food_conso_files {
     }
 
 }
+
+/*-----------------------------------------------------------------------------
+Appliquer les étiquettes de valeur fusionnées à la base
+-----------------------------------------------------------------------------*/
+
+do "`lbl_dir_temp'/lbls_fusionnes.do"
+
+foreach var of local vars_a_etiquetter {
+    label values `var' `var'
+}
+
+/*-----------------------------------------------------------------------------
+Sauvegarder le résultat
+-----------------------------------------------------------------------------*/
+
+rename s07Bq02 s07Bq02_autre
 
 save "`data_dir_temp'/consommation_alimentaire_7j.dta", replace
 
