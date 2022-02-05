@@ -181,60 +181,95 @@ foreach food_conso_file of local food_conso_files {
 save "`data_dir_temp'/consommation_alimentaire_7j.dta", replace
 
 /*=============================================================================
-Rendre les rosters conformes à leur forme dans questionnaire papier
+Modifier le nom des fichiers (au besoin)
 =============================================================================*/
 
-/*-----------------------------------------------------------------------------
-Ramener la question filtre dans le roster
------------------------------------------------------------------------------*/
 /* 
-* get list of variables
-qui: d s07Bq*_cereales, varlist
-local var_w_suffix = r(varlist)
 
-* construct list of variable names without product group suffix
-local var_no_suffix = ""
-foreach var of local var_w_suffix {
-    local new_element = subinstr("`var'", "_cereales", "", .)
-    local var_no_suffix "`var_no_suffix' `new_element'" 
+* Modèle pour modifier
+* voir le code à partir d'ici: https://github.com/arthur-shaw/ehcvm-transformer-bases/blob/24e32bf79f4588c783793fb967759aa62d1aa548/transformerQnrMenage.do#L97 
+
+local ancien_nom ""
+local nouveau_nom ""
+
+cd "`data_dir_combined'"
+
+ren "`ancien_nom'" "`nouveau_nom'"
+
+ */
+
+/*=============================================================================
+Vérifier l'existence des bases escomptés
+=============================================================================*/
+
+#delim ;
+local bases_attendus "
+actifs.dta
+assignment__actions.dta
+boissons.dta
+cereales.dta
+champs.dta
+chocs.dta
+cout_intrants.dta
+cout_permis.dta
+cultures.dta
+culture_utilisation_annuelle.dta
+culture_utilisation_perenne.dta
+depense_12m.dta
+depense_30j.dta
+depense_3m.dta
+depense_6m.dta
+depense_7j.dta
+depense_fete.dta
+discrimination.dta
+elevage.dta
+entreprises.dta
+entreprise_travailFamilial.dta
+entreprise_travailSalarie.dta
+entretien_nf.dta
+epices.dta
+equipements.dta
+filets_securite.dta
+fruits.dta
+Gouvernance.dta
+huiles.dta
+impactCovid19.dta
+impactCovid19NoMembres.dta
+interview__actions.dta
+interview__comments.dta
+interview__diagnostics.dta
+interview__errors.dta
+laitier.dta
+legtub.dta
+legumes.dta
+membres.dta
+menage.dta
+parcelles.dta
+poissons.dta
+poisson_basse_saison.dta
+poisson_haute_saison.dta
+preparation_f.dta
+preparation_sol_semi_nf.dta
+recolte_nf.dta
+sucreries.dta
+transferts_recus.dta
+viandes.dta
+";
+#delim cr
+
+foreach base of local bases_attendus {
+
+    capture confirm file "`data_dir_combined'/`base'"
+
+    if _rc != 0 {
+
+        di as error "Fichier `base' pas retrouvé dans le répertoire /data/combined/"
+        error 1
+
+    }
+
 }
 
-local nitems: word count `var_w_suffix'
-
-forvalues i = 1/`nitems' {
-
-	local old_name : word `i' of `var_w_suffix'
-	local new_name : word `i' of `var_no_suffix'
-
-    rename `old_name' `new_name'
-
-    local `old_name': value label `new_name'
-    label save `old_name' using "`lbl_dir_temp'/`old_name'.do", replace
-
-}
-
-local vars_no_suffix = subinstr("`var_w_suffix'", "__cereales", "") 
-*/
-
-/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Céréales
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* 
-reshape_multi_select_yn,
-
-
-cereales
-viandes
-poissons
-huiles
-laitier
-fruits
-legumes
-legtub
-sucreries
-epices
-boissons 
-*/
 
 /*-----------------------------------------------------------------------------
 Ramener la question filtre oui/non dans le roster
