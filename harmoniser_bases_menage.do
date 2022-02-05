@@ -885,7 +885,7 @@ use "`membres'", clear
 
 rename membres__id s07aq00a
 rename nom_prenoms s07aq00b
-rename s07aq00_0 s07aq00
+capture rename s07aq00_0 s07aq00
 
 save_section, ///
     case_ids(`case_ids_vars') ///
