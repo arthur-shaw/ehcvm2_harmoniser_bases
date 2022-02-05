@@ -57,7 +57,7 @@ syntax ,                        ///
     use "`input_dir'/`roster_file'", clear
     local `new_roster_id_var': value label `item_code_var'
     label copy `item_code_var' `new_roster_id_var'
-    label save `new_roster_id_var' using "`output_dir'/`new_roster_id_var'.do"
+    label save `new_roster_id_var' using "`output_dir'/`new_roster_id_var'.do", replace
 
     /*========================================================================= 
     Reshape multi-select question
