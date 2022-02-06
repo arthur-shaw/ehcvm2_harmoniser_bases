@@ -1,0 +1,3 @@
+# everything: zip files, folder, and Stata data they contain
+*.zip
+*/
