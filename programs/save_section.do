@@ -8,6 +8,7 @@ syntax, ///
     vars_to_keep(string)    ///
     section_code(string)    ///
     country_code(string)    ///
+    type(string)            ///
     year(string)            ///
     output_dir(string)      ///
 
@@ -44,6 +45,6 @@ syntax, ///
     keep `all_ids' `vars_to_keep'
 
     * save data to file
-    save "`output_dir'/s`section_code'_me_`country_code'_`year'.dta", replace
+    save "`output_dir'/s`section_code'_`type'_`country_code'_`year'.dta", replace
 
 end
