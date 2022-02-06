@@ -90,6 +90,15 @@ Fusionner les bases
 Toutes les bases
 -----------------------------------------------------------------------------*/
 
+* confirm that the download folder contains sub-folders
+local data_folders : dir "`data_dir_raw'" dirs "*", respectcase
+
+capture assert `"`data_folders'"' ! = ""
+if _rc != 0 {
+    di as error "Le répertoire /0_downloaded/ doit contenir des sous-répertoires qui, eux, contiennent des fichiers dta."
+    error 1
+}
+
 * append together same-named files from different template versions
 appendAll, 							    ///
 	inputDir("`data_dir_raw'") 		    ///	où chercher les données téléchargées
@@ -314,7 +323,7 @@ laitier.dta
 legtub.dta
 legumes.dta
 membres.dta
-menage.dta
+`fichier_principal'
 parcelles.dta
 poissons.dta
 poisson_basse_saison.dta
@@ -718,6 +727,7 @@ save_section, ///
     vars_to_keep("s00*") /// 
     section_code("00") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -748,6 +758,7 @@ save_section, ///
     vars_to_keep("s01*") /// TODO: decide whether to include preloaded data
     section_code("01") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -765,6 +776,7 @@ save_section, ///
     vars_to_keep("s02*") ///
     section_code("02") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -782,6 +794,7 @@ save_section, ///
     vars_to_keep("s03*") ///
     section_code("03") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -802,6 +815,7 @@ save_section, ///
     vars_to_keep("s04q00_0 - s04q28b") ///
     section_code("04a") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -820,6 +834,7 @@ save_section, ///
     vars_to_keep("s04q29a - s04q50b") ///
     section_code("04b") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -838,6 +853,7 @@ save_section, ///
     vars_to_keep("s04q51a - s04q64_controle__59") ///
     section_code("04c") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -855,6 +871,7 @@ save_section, ///
     vars_to_keep("s05*") ///
     section_code("05") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -874,6 +891,7 @@ save_section, ///
     vars_to_keep("s06*") ///
     section_code("06") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -892,6 +910,7 @@ save_section, ///
     vars_to_keep("s07a*") ///
     section_code("07a_2") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -906,6 +925,7 @@ save_section, ///
     vars_to_keep("s07a*") ///
     section_code("07a_1") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -926,6 +946,7 @@ save_section, ///
     vars_to_keep("s07b*") ///
     section_code("07b") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -940,6 +961,7 @@ save_section, ///
     vars_to_keep("s08a*") ///
     section_code("08a") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -960,6 +982,7 @@ save_section, ///
     vars_to_keep("s09a*") ///
     section_code("09a") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -980,6 +1003,7 @@ save_section, ///
     vars_to_keep("s09b*") ///
     section_code("09b") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1000,6 +1024,7 @@ save_section, ///
     vars_to_keep("s09c*") ///
     section_code("09c") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1020,6 +1045,7 @@ save_section, ///
     vars_to_keep("s09d*") ///
     section_code("09d") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1040,6 +1066,7 @@ save_section, ///
     vars_to_keep("s09e*") ///
     section_code("09e") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1060,6 +1087,7 @@ save_section, ///
     vars_to_keep("s09f*") ///
     section_code("09f") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1077,6 +1105,7 @@ save_section, ///
     vars_to_keep("s10*") ///
     section_code("10a") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1108,6 +1137,7 @@ save_section, ///
     vars_to_keep("s10*") ///
     section_code("10b") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1122,6 +1152,7 @@ save_section, ///
     vars_to_keep("s11*") ///
     section_code("11") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1142,6 +1173,7 @@ save_section, ///
     vars_to_keep("s12*") ///
     section_code("12") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1159,6 +1191,7 @@ save_section, ///
     vars_to_keep("s13*") ///
     section_code("13_1") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1182,6 +1215,7 @@ save_section, ///
     vars_to_keep("s13*") ///
     section_code("13_2") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1202,6 +1236,7 @@ save_section, ///
     vars_to_keep("s14a*") ///
     section_code("14a") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1222,6 +1257,7 @@ save_section, ///
     vars_to_keep("s14b*") ///
     section_code("14b") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1242,6 +1278,7 @@ save_section, ///
     vars_to_keep("s15*") ///
     section_code("15") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1269,6 +1306,7 @@ save_section, ///
     vars_to_keep("s16a*") ///
     section_code("16a") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1289,6 +1327,7 @@ save_section, ///
     vars_to_keep("s16b*") ///
     section_code("16b") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1319,6 +1358,7 @@ save_section, ///
     vars_to_keep("s16c*") ///
     section_code("16c") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1342,6 +1382,7 @@ save_section, ///
     section_code("16d") ///
     country_code("`pays'") ///
     year(`annee') ///
+    type("me") ///
     output_dir("`data_dir_output'")
 
 /*-----------------------------------------------------------------------------
@@ -1361,6 +1402,7 @@ save_section, ///
     vars_to_keep("s17*") ///
     section_code("17") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1387,6 +1429,7 @@ save_section, ///
     vars_to_keep("s18*") ///
     section_code("18_1") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1409,6 +1452,7 @@ save_section, ///
     vars_to_keep("s18*") ///
     section_code("18_2") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1431,6 +1475,7 @@ save_section, ///
     vars_to_keep("s18*") ///
     section_code("18_3") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1453,6 +1498,7 @@ save_section, ///
     vars_to_keep("s19*") ///
     section_code("19") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1467,6 +1513,7 @@ save_section, ///
     vars_to_keep("s20q00 s20a*") ///
     section_code("20a") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1485,6 +1532,7 @@ save_section, ///
     vars_to_keep("s20b*") ///
     section_code("20b_1") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1507,6 +1555,7 @@ save_section, ///
     vars_to_keep("s20b*") ///
     section_code("20b_2") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1529,6 +1578,7 @@ save_section, ///
     vars_to_keep("s20b*") ///
     section_code("20b_3") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
 
@@ -1543,5 +1593,6 @@ save_section, ///
     vars_to_keep("s20c*") ///
     section_code("20c") ///
     country_code("`pays'") ///
+    type("me") ///
     year(`annee') ///
     output_dir("`data_dir_output'")
