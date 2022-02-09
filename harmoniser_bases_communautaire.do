@@ -271,7 +271,7 @@ add_case_ids, ///
 save_section, ///
     case_ids(`case_ids_vars') ///
     vars_to_keep("s04*") /// 
-    section_code("03") ///
+    section_code("04") ///
     country_code("`pays'") ///
     type("comm") ///
     year(`annee') ///
