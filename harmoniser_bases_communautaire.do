@@ -47,6 +47,35 @@ include "`prog_dir'/rename_vars_lower.do"
 include "`prog_dir'/recode_yes1_no2.do"
 include "`prog_dir'/save_section.do"
 
+/*-----------------------------------------------------------------------------
+Confirmer les paramètres fournis
+-----------------------------------------------------------------------------*/
+
+* répertoire proj_dir existe
+capture cd "`prog_dir'"
+if _rc ! = 0 {
+    di as error "Le répertoire désigné dans le paramètre -prog_dir- n'existe pas"
+    error 1
+}
+
+* fichier_principal
+* case_ids_vars
+
+
+* pays n'est pas vide
+capture assert "`pays'" != ""
+if _rc ! = 0 {
+    di as error "Le paramètre -pays- a été laissé vide"
+    error 1
+}
+
+* annee n'est pas vide
+capture assert "`annee'" != ""
+if _rc ! = 0 {
+    di as error "Le paramètre -annee- a été laissé vide"
+    error 1
+}
+
 /*=============================================================================
 Purger les fichiers de séances passées
 =============================================================================*/
