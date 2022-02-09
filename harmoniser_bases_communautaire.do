@@ -44,6 +44,7 @@ include "`prog_dir'/reshape_multi_select_yn.do"
 include "`prog_dir'/reshape_nested_to_wide.do"
 include "`prog_dir'/add_case_ids.do"
 include "`prog_dir'/rename_vars_lower.do"
+include "`prog_dir'/recode_yes1_no2.do"
 include "`prog_dir'/save_section.do"
 
 /*=============================================================================
@@ -215,6 +216,10 @@ Section 1: Caractéristiques du village
 
 use "`data_dir_combined'/`fichier_principal'", clear
 
+recode_yes1_no2, vars("s01q08__*")
+recode_yes1_no2, vars("s01q13__*")
+recode_yes1_no2, vars("s01q14__*")
+
 save_section, ///
     case_ids(`case_ids_vars') ///
     vars_to_keep("s01*") /// 
@@ -249,6 +254,8 @@ Section 3: Agriculture
 
 use "`data_dir_combined'/`fichier_principal'", clear
 
+recode_yes1_no2, vars("s03q04__*")
+
 save_section, ///
     case_ids(`case_ids_vars') ///
     vars_to_keep("s03*") /// 
@@ -267,6 +274,9 @@ use "`data_dir_temp'/infrastructures.dta", clear
 add_case_ids, ///
     source_file("`data_dir_combined'/`fichier_principal'") ///
     case_ids(`case_ids_vars')
+
+recode_yes1_no2, vars("s04q07__*")
+recode_yes1_no2, vars("s04q09__*")
 
 save_section, ///
     case_ids(`case_ids_vars') ///

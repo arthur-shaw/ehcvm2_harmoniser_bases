@@ -44,6 +44,7 @@ include "`prog_dir'/reshape_multi_select_yn.do"
 include "`prog_dir'/reshape_nested_to_wide.do"
 include "`prog_dir'/add_case_ids.do"
 include "`prog_dir'/rename_vars_lower.do"
+include "`prog_dir'/recode_yes1_no2.do"
 include "`prog_dir'/save_section.do"
 
 /*=============================================================================
@@ -753,6 +754,8 @@ save "`membres'", replace
 rename membres__id s01q00_a
 rename nom_prenoms s01q00_b
 
+recode_yes1_no2, vars("s01q39__*")
+
 save_section, ///
     case_ids(`case_ids_vars') ///
     vars_to_keep("s01*") /// TODO: decide whether to include preloaded data
@@ -771,6 +774,9 @@ use "`membres'", clear
 rename membres__id s02q00a
 rename nom_prenoms s02q00b
 
+recode_yes1_no2, vars("s02q01__*")
+recode_yes1_no2, vars("s02q18__*")
+
 save_section, ///
     case_ids(`case_ids_vars') ///
     vars_to_keep("s02*") ///
@@ -788,6 +794,8 @@ use "`membres'", clear
 
 rename membres__id s03q00a
 rename nom_prenoms s03q00b
+
+recode_yes1_no2, vars("s03q10__*")
 
 save_section, ///
     case_ids(`case_ids_vars') ///
@@ -808,6 +816,8 @@ rename membres__id s04q00a
 rename nom_prenoms s04q00b
 
 capture drop verif_canaux confirme4q23 nombrerecherchenonrenseigne canaux2
+
+recode_yes1_no2, vars("s04q24__*")
 
 save_section, ///
     case_ids(`case_ids_vars') ///
@@ -885,6 +895,8 @@ rename membres__id s06q00a
 rename nom_prenoms s06q00b
 
 drop compte2 compte1
+
+recode_yes1_no2, vars("s06q01__*")
 
 save_section, ///
     case_ids(`case_ids_vars') ///
@@ -1146,6 +1158,10 @@ save_section, ///
 -----------------------------------------------------------------------------*/
 
 use "`menages'", clear
+
+recode_yes1_no2, vars("s11q03*")
+recode_yes1_no2, vars("s11q32__*")
+recode_yes1_no2, vars("s11q60__*")
 
 save_section, ///
     case_ids(`case_ids_vars') ///
@@ -1526,6 +1542,8 @@ Niveau ménage
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
 use "`menages'", clear
+
+recode_yes1_no2, vars("s20bq08*")
 
 save_section, ///
     case_ids(`case_ids_vars') ///
