@@ -6,10 +6,10 @@ Parmétrage
 Paramètres du programme
 -----------------------------------------------------------------------------*/
 
-local proj_dir 	"C:\Users\wb393438\UEMOA\ehcvm2_harmoniser_bases/"
-local fichier_principal "Qx_COMMUNAUTAIRE_EHCVM_TG.dta"
+local proj_dir 	""
+local fichier_principal ""
 local case_ids_vars "grappe vague"
-local pays "TGO"
+local pays ""
 local annee "2021"
 
 /*-----------------------------------------------------------------------------
