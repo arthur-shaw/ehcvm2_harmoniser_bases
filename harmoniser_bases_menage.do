@@ -13,41 +13,6 @@ local pays ""
 local annee "2021"
 
 /*-----------------------------------------------------------------------------
-Définir les répertoires
------------------------------------------------------------------------------*/
-
-* données
-local data_dir_raw      "`proj_dir'/data/0_downloaded/menage/"	// données brutes
-local data_dir_combined "`proj_dir'/data/1_combined/menage/" 	// données légèrement modifiées
-local data_dir_temp     "`proj_dir'/data/2_temp/menage/" 		// fichiers temporaires
-local data_dir_output   "`proj_dir'/data/3_output/menage/" 	    // données finales
-
-* étiquettes
-local lbl_dir_temp  "`proj_dir'/labels/temp/menage/"
-local lbl_dir_out   "`proj_dir'/labels/output/menage/"
-
-* programmes
-local prog_dir "`proj_dir'/programs/"
-
-/*-----------------------------------------------------------------------------
-Comportement de Stata
------------------------------------------------------------------------------*/
-
-set more 1
-
-/*-----------------------------------------------------------------------------
-Charger les programmes de service
------------------------------------------------------------------------------*/
-
-include "`prog_dir'/appendAll"
-include "`prog_dir'/reshape_multi_select_yn.do"
-include "`prog_dir'/reshape_nested_to_wide.do"
-include "`prog_dir'/add_case_ids.do"
-include "`prog_dir'/rename_vars_lower.do"
-include "`prog_dir'/recode_yes1_no2.do"
-include "`prog_dir'/save_section.do"
-
-/*-----------------------------------------------------------------------------
 Confirmer les paramètres fournis
 -----------------------------------------------------------------------------*/
 
@@ -75,6 +40,41 @@ if _rc ! = 0 {
     di as error "Le paramètre -annee- a été laissé vide"
     error 1
 }
+
+/*-----------------------------------------------------------------------------
+Définir les répertoires
+-----------------------------------------------------------------------------*/
+
+* données
+local data_dir_raw      "`proj_dir'/data/0_downloaded/menage/"	// données brutes
+local data_dir_combined "`proj_dir'/data/1_combined/menage/" 	// données légèrement modifiées
+local data_dir_temp     "`proj_dir'/data/2_temp/menage/" 		// fichiers temporaires
+local data_dir_output   "`proj_dir'/data/3_output/menage/" 	    // données finales
+
+* étiquettes
+local lbl_dir_temp  "`proj_dir'/labels/temp/menage/"
+local lbl_dir_out   "`proj_dir'/labels/output/menage/"
+
+* programmes
+local prog_dir "`proj_dir'/programs/"
+
+/*-----------------------------------------------------------------------------
+Comportement de Stata
+-----------------------------------------------------------------------------*/
+
+set more 1
+
+/*-----------------------------------------------------------------------------
+Charger les programmes de service
+-----------------------------------------------------------------------------*/
+
+include "`prog_dir'/appendAll.do"
+include "`prog_dir'/reshape_multi_select_yn.do"
+include "`prog_dir'/reshape_nested_to_wide.do"
+include "`prog_dir'/add_case_ids.do"
+include "`prog_dir'/rename_vars_lower.do"
+include "`prog_dir'/recode_yes1_no2.do"
+include "`prog_dir'/save_section.do"
 
 /*=============================================================================
 Purger les fichiers de séances passées
