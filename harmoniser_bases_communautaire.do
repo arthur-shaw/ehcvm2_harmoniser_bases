@@ -310,7 +310,7 @@ Ramener la question filtre oui/non dans le roster
 
 * Section 2: Existence et accessibilité aux services sociaux
 reshape_multi_select_yn, ///
-    input_dir("`data_dir_combined'") ///
+    input_dir("`data_dir_temp'") ///
     main_file("`fichier_principal'") ///
     roster_file("service_sociaux.dta") ///
     trigger_var("s02q01") ///
@@ -320,7 +320,7 @@ reshape_multi_select_yn, ///
 
 * section 4: Participation communautaire
 reshape_multi_select_yn, ///
-    input_dir("`data_dir_combined'") ///
+    input_dir("`data_dir_temp'") ///
     main_file("`fichier_principal'") ///
     roster_file("infrastructures.dta") ///
     trigger_var("s04q01") ///
@@ -342,10 +342,10 @@ Créer des fichiers par section
 Section 0: Liste des personnes répondantes
 -----------------------------------------------------------------------------*/
 
-use "`data_dir_combined'/section0.dta", clear
+use "`data_dir_temp'/section1.dta", clear
 
 add_case_ids, ///
-    source_file("`data_dir_combined'/`fichier_principal'") ///
+    source_file("`data_dir_temp'/`fichier_principal'") ///
     case_ids(`case_ids_vars')
 
 rename section1__id s00q00
@@ -364,7 +364,7 @@ save_section, ///
 Section 1: Caractéristiques du village
 -----------------------------------------------------------------------------*/
 
-use "`data_dir_combined'/`fichier_principal'", clear
+use "`data_dir_temp'/`fichier_principal'", clear
 
 recode_yes1_no2, vars("s01q08__*")
 recode_yes1_no2, vars("s01q13__*")
@@ -386,7 +386,7 @@ Section 2: Existence et accessibilité aux services sociaux
 use "`data_dir_temp'/service_sociaux.dta", clear
 
 add_case_ids, ///
-    source_file("`data_dir_combined'/`fichier_principal'") ///
+    source_file("`data_dir_temp'/`fichier_principal'") ///
     case_ids(`case_ids_vars')
 
 save_section, ///
@@ -402,7 +402,7 @@ save_section, ///
 Section 3: Agriculture
 -----------------------------------------------------------------------------*/
 
-use "`data_dir_combined'/`fichier_principal'", clear
+use "`data_dir_temp'/`fichier_principal'", clear
 
 recode_yes1_no2, vars("s03q04__*")
 
@@ -422,7 +422,7 @@ Section 4: Participation communautaire
 use "`data_dir_temp'/infrastructures.dta", clear
 
 add_case_ids, ///
-    source_file("`data_dir_combined'/`fichier_principal'") ///
+    source_file("`data_dir_temp'/`fichier_principal'") ///
     case_ids(`case_ids_vars')
 
 recode_yes1_no2, vars("s04q07__*")
