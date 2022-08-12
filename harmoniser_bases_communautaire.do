@@ -204,6 +204,42 @@ use "`data_dir_combined'/`fichier_principal'", clear
 drop if mi(s00q06a) & inlist(interview__id, "e505ef643bb747f186873ad67f1210e9", "58f03dd935f64a669f425424a871f0d1")
 save "`data_dir_combined'/`fichier_principal'", replace
 
+/*-----------------------------------------------------------------------------
+Traiter tous les fichiers
+-----------------------------------------------------------------------------*/
+
+* fichier principal
+use "`zd_apure'", clear
+merge m:1 interview__id interview__key using "`data_dir_combined'/`fichier_principal'", nogen
+rename s00q06b grappe
+drop interview__id
+rename interview__id2 interview__id
+save "`data_dir_temp'/`fichier_principal'", replace
+
+* roster des répondants
+use "`zd_apure'", clear
+merge m:m interview__id interview__key  using "`data_dir_combined'/section1.dta", nogen
+drop s00q06b
+drop interview__id
+rename interview__id2 interview__id
+save "`data_dir_temp'/section1.dta", replace
+
+* services sociaux
+use "`zd_apure'", clear
+merge m:m interview__id interview__key  using "`data_dir_combined'/service_sociaux.dta", nogen
+drop s00q06b
+drop interview__id
+rename interview__id2 interview__id
+save "`data_dir_temp'/service_sociaux.dta", replace
+
+* infrastructures
+use "`zd_apure'", clear
+merge m:m interview__id interview__key  using "`data_dir_combined'/infrastructures.dta", nogen
+drop s00q06b
+drop interview__id
+rename interview__id2 interview__id
+save "`data_dir_temp'/infrastructures.dta", replace
+
 
 /*=============================================================================
 Rendre les rosters conformes à leur forme dans questionnaire papier
