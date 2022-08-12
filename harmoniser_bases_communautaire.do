@@ -348,7 +348,7 @@ add_case_ids, ///
     source_file("`data_dir_combined'/`fichier_principal'") ///
     case_ids(`case_ids_vars')
 
-rename section0__id s00q00
+rename section1__id s00q00
 capture rename s00q011 s00q01
 
 save_section, ///
