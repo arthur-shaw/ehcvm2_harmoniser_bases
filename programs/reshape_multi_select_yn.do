@@ -85,7 +85,7 @@ syntax ,                        ///
     - to new roster ID variable, since its label was destroyed by -clear-
     =========================================================================*/
 
-    label define `trigger_var' 1 "Oui" 2 "Non"
+    label define `trigger_var' 1 "Oui" 2 "Non", replace
     do "`output_dir'/`new_roster_id_var'.do"
     label values `new_roster_id_var' `new_roster_id_var'
     label values `trigger_var' `trigger_var'
