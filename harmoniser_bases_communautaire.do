@@ -179,6 +179,31 @@ foreach base of local bases_attendus {
 
 }
 
+/*=============================================================================
+Créer une observation par ZD
+=============================================================================*/
+
+/*-----------------------------------------------------------------------------
+Modifier des observations abérantes
+-----------------------------------------------------------------------------*/
+
+* modifier le fichier ZD
+use "`data_dir_combined'/zd.dta", clear
+* donner des code de ZD provisoire
+replace s00q06b = -1 if interview__id == "3d835bc013ce4e4db56106a1c5e58d4f"
+replace s00q06b = -2 if interview__id == "ec37cbc0083f4bfda7de21b7fafe26d4"
+tostring zd__id, replace
+tostring s00q06b, gen(zd)
+gen interview__id2 = interview__id + " - " + zd__id + " - " + zd
+drop zd__id
+tempfile zd_apure
+save "`zd_apure'", replace
+
+* modifier le fichier principal
+use "`data_dir_combined'/`fichier_principal'", clear
+drop if mi(s00q06a) & inlist(interview__id, "e505ef643bb747f186873ad67f1210e9", "58f03dd935f64a669f425424a871f0d1")
+save "`data_dir_combined'/`fichier_principal'", replace
+
 
 /*=============================================================================
 Rendre les rosters conformes à leur forme dans questionnaire papier
