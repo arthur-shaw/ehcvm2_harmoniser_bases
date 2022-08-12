@@ -240,6 +240,65 @@ drop interview__id
 rename interview__id2 interview__id
 save "`data_dir_temp'/infrastructures.dta", replace
 
+/*=============================================================================
+Aligner les nom avec le modèle régional
+=============================================================================*/
+
+/*-----------------------------------------------------------------------------
+EHCVM2_COMMUNAUTAIRE_VAGUE1_BFA.dta
+-----------------------------------------------------------------------------*/
+
+use "`data_dir_temp'/`fichier_principal'", clear
+
+* s01 -> s00
+rename_with, substring("s01") replacement("s00")
+
+* s02 -> s01
+rename_with, substring("s02") replacement("s01")
+
+* s03 -> s02
+rename_with, substring("s03") replacement("s02")
+
+* s04 -> s03
+rename_with, substring("s04") replacement("s03")
+
+* s05 -> s04
+rename_with, substring("s05") replacement("s04")
+
+save "`data_dir_temp'/`fichier_principal'", replace
+
+/*-----------------------------------------------------------------------------
+section1.dta
+-----------------------------------------------------------------------------*/
+
+use "`data_dir_temp'/section1.dta", clear
+
+* s1 -> s0
+rename_with, substring("s01") replacement("s00")
+
+save "`data_dir_temp'/section1.dta", replace
+
+/*-----------------------------------------------------------------------------
+service_sociaux.dta
+-----------------------------------------------------------------------------*/
+
+use "`data_dir_temp'/service_sociaux.dta", clear
+
+* s3 -> s2
+rename_with, substring("s03") replacement("s02")
+
+save "`data_dir_temp'/service_sociaux.dta", replace
+
+/*-----------------------------------------------------------------------------
+infrastructures.dta
+-----------------------------------------------------------------------------*/
+
+use "`data_dir_temp'/infrastructures.dta", clear
+
+* s5 -> s4
+rename_with, substring("s05") replacement("s04")
+
+save "`data_dir_temp'/infrastructures.dta", replace
 
 /*=============================================================================
 Rendre les rosters conformes à leur forme dans questionnaire papier
