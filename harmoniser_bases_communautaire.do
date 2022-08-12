@@ -7,9 +7,9 @@ Paramètres du programme
 -----------------------------------------------------------------------------*/
 
 local proj_dir 	""
-local fichier_principal ""
+local fichier_principal "EHCVM2_COMMUNAUTAIRE_VAGUE1_BFA.dta"
 local case_ids_vars "grappe vague"
-local pays ""
+local pays "bfa"
 local annee "2021"
 
 /*-----------------------------------------------------------------------------
@@ -158,7 +158,7 @@ Vérifier l'existence des bases escomptés
 
 #delim ;
 local bases_attendus "
-section0.dta
+section1.dta
 `fichier_principal'
 infrastructures.dta
 service_sociaux.dta
