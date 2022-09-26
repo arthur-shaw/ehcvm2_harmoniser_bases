@@ -187,16 +187,6 @@ Rendre les rosters conformes à leur forme dans questionnaire papier
 Ramener la question filtre oui/non dans le roster
 -----------------------------------------------------------------------------*/
 
-* Section 2: Existence et accessibilité aux services sociaux
-reshape_multi_select_yn, ///
-    input_dir("`data_dir_combined'") ///
-    main_file("`fichier_principal'") ///
-    roster_file("service_sociaux.dta") ///
-    trigger_var("s02q01") ///
-    item_code_var("service_sociaux__id") ///
-    new_roster_id_var("s02q00") ///
-    output_dir("`data_dir_temp'") ///
-
 * section 4: Participation communautaire
 reshape_multi_select_yn, ///
     input_dir("`data_dir_combined'") ///
@@ -262,7 +252,18 @@ save_section, ///
 Section 2: Existence et accessibilité aux services sociaux
 -----------------------------------------------------------------------------*/
 
+* copier la base combinée vers le répertoire temporaire, 
+* une version temporaire n'ayant pas été créé plus haut, la variables oui/non se trouvant déjà dans le fichier roster
+copy "`data_dir_combined'/service_sociaux.dta" "`data_dir_temp'/service_sociaux.dta", replace
+
 use "`data_dir_temp'/service_sociaux.dta", clear
+
+* transformer dans la forme attendue:
+* - question filtre au nom de s02q00
+* - étiquette de valeurs du même nom
+rename service_sociaux__id s02q00
+label copy service_sociaux__id s02q00
+label drop service_sociaux__id
 
 add_case_ids, ///
     source_file("`data_dir_combined'/`fichier_principal'") ///
