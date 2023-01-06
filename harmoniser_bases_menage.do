@@ -1456,10 +1456,40 @@ save_section, ///
 -----------------------------------------------------------------------------*/
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Transformer le coût de permis en format large
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+use "`data_dir_combined'/cout_permis.dta", clear
+local n_permis_obs = _N
+if `n_permis_obs' > 0 {
+    
+    * transformer
+    keep interview__id interview__id cout_permis__id s18q08
+    rename rename s18q08 s18q08__
+    rehape wide s18q08__, i(interview__id interview__key) j(cout_permis__id)
+
+    *sauvegarder
+    save "`data_dir_temp'/permis_en_large.dta", replace
+
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Niveau ménage
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
 use "`menages'", clear
+
+* ajouter le coût de permis en format large
+* si la base ci-haut existe, adjoindre la base
+if `n_permis_obs' > 0 {
+    merge 1:1 interview__id interview__key using "`data_dir_temp'/permis_en_large.dta", keep(1 3) nogen
+* sinon, créer des variables vides
+} 
+else if `n_permis_obs' == 0 {
+    forvalues i = 1/6 {
+        capture gen s18q08__`i' = .
+    }
+}
 
 * exclure les listes de poisson, comme elle paraissent dans les bases des saisons
 drop s18q14__* s18q20__*
